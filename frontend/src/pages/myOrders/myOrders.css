@@ -1,0 +1,98 @@
+.my-orders{
+    margin: 50px 0px;
+}
+.my-orders .container{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin: 30px;
+}
+.my-orders-order{
+    display: grid;
+   grid-template-columns: 0.5fr 4fr 1fr 1fr 1.5fr 1fr;
+    align-items: center;
+    gap: 30px;
+    font-size: 14px;
+    padding: 10px 20px;
+    color: #454545;
+    border: 1px solid tomato;
+}
+.my-orders-order img{
+width: 50px;
+}
+.my-orders-order p span{
+    color: tomato;
+}
+.my-orders-order p b{
+ font-weight: 500;
+ color: #454545 ;
+}
+
+.my-orders-order button{
+ border: none;
+ padding: 12px 0px;
+ border-radius: 4px;
+ background-color: #ffe1e1;
+ cursor: pointer;
+ color: #454545;
+}
+.no-orders-message {
+    /* 1. Layout and Spacing */
+    width: 100%;
+    text-align: center; /* Center the text inside the div */
+    padding: 50px 20px;
+    margin-top: 50px;
+    
+    /* 2. Appearance */
+    border: 2px dashed #ff9800; /* A dashed border is friendly */
+    border-radius: 12px;
+    background-color: #fffaf0; /* Light cream/yellow background */
+    color: #333; /* Dark gray text */
+    
+    /* 3. Typography */
+    font-size: 18px;
+    line-height: 1.5;
+}
+
+.no-orders-message p {
+    margin-bottom: 20px; /* Space below the main text */
+    font-weight: 500;
+}
+
+/* Optional: Styling for a "Go to Menu" button */
+.no-orders-message button {
+    background-color: tomato;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.3s;
+}
+
+.no-orders-message button:hover {
+    background-color: darkred;
+}
+
+/* Style for the temporary loading message */
+.loading-message {
+    text-align: center;
+    font-size: 18px;
+    color: #666;
+    padding: 30px;
+}
+@media(max-width:900px){
+    .my-orders-order{
+    grid-template-columns: 1fr 2fr 1fr;
+    row-gap: 5px;
+    font-size: 12px;
+    }
+}
+.my-orders-order button{
+font-size: 10px;
+}
+
+
+ 
