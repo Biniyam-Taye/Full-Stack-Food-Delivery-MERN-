@@ -47,6 +47,18 @@ app.get("/", (req, res) => {
   res.send("API working");
 });
 
+app.get("/health", (req, res) => {
+  res.json({
+    status: "OK",
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || "development",
+    mongodb: process.env.MONGODB_URI ? "configured" : "missing",
+    cloudinary: process.env.CLOUDINARY_CLOUD_NAME ? "configured" : "missing",
+    stripe: process.env.STRIPE_SECRET_KEY ? "configured" : "missing",
+    jwt: process.env.JWT_SECRET ? "configured" : "missing"
+  });
+});
+
 if (process.env.NODE_ENV !== 'production') {
   app.listen(port, () => {
     console.log(`server is running on http://localhost:${port}`);
