@@ -1,9 +1,41 @@
-node_modules
+# Dependencies
+node_modules/
+package-lock.json
+
+# Environment variables
 .env
 .env.local
-dist
-.vscode
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Build outputs
+dist/
+build/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
 .DS_Store
-backend/uploads
-frontend/dist
-admin/dist
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Uploads
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# Misc
+.cache/
+coverage/
+.temp/

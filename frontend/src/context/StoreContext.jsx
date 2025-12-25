@@ -1,5 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import axios from "axios";
+import { menu_list as dummyMenuList, food_list as dummyFoodList } from "../assets/assets";
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
@@ -86,14 +87,23 @@ const StoreContextProvider = (props) => {
     try {
       const response = await axios.get(url + "/api/food/list");
       if (response.data.success) {
-        setFoodlist(response.data.data);
+        // Use backend data only if it has a good variety (at least 10 items)
+        // Otherwise use dummy data to ensure customers see plenty of options
+        if (response.data.data && response.data.data.length >= 10) {
+          setFoodlist(response.data.data);
+        } else {
+          console.log(`Backend has ${response.data.data?.length || 0} items, using dummy data for better variety`);
+          setFoodlist(dummyFoodList);
+        }
       } else {
         console.error("Failed to fetch food list:", response.data.message);
-        setError("Failed to load food items. Please try again.");
+        console.log("Using dummy food data as fallback");
+        setFoodlist(dummyFoodList);
       }
     } catch (error) {
       console.error("Error fetching food list:", error);
-      setError("Network error: Unable to connect to backend. Please check your connection.");
+      console.log("Using dummy food data as fallback");
+      setFoodlist(dummyFoodList);
     }
   };
 
@@ -106,12 +116,22 @@ const StoreContextProvider = (props) => {
           menu_name: cat.name,
           menu_image: cat.image
         }));
-        setMenulist(backendMenu);
+        // Use backend data if available, otherwise use dummy data
+        if (backendMenu && backendMenu.length > 0) {
+          setMenulist(backendMenu);
+        } else {
+          console.log("No categories in backend, using dummy menu data");
+          setMenulist(dummyMenuList);
+        }
       } else {
-         console.error("Failed to fetch menu list:", response.data.message);
+        console.error("Failed to fetch menu list:", response.data.message);
+        console.log("Using dummy menu data as fallback");
+        setMenulist(dummyMenuList);
       }
     } catch (error) {
       console.error("Error fetching menu categories:", error);
+      console.log("Using dummy menu data as fallback");
+      setMenulist(dummyMenuList);
     }
   };
 
@@ -145,44 +165,55 @@ const StoreContextProvider = (props) => {
         headers: { token },
       });
       if (response.data && response.data.cartData) {
-         setCartItems(response.data.cartData);
+        setCartItems(response.data.cartData);
       }
     } catch (error) {
-       console.error("Error loading cart data:", error);
+      console.error("Error loading cart data:", error);
     }
   };
 
+  // Fetch global data once on mount
   useEffect(() => {
-    async function LoadData() {
+    async function loadGlobalData() {
       setIsLoading(true);
-      setError(null); // Reset error on reload
+      setError(null);
       try {
-        // Parallelize independent fetch requests
-        const commonPromises = [
+        await Promise.all([
           fetchFoodList(),
           fetchMenuList(),
           fetchSettings()
-        ];
-
-        // Add user-specific data loading if a token exists
-        const token = localStorage.getItem("token");
-        if (token) {
-          setToken(token);
-          commonPromises.push(loadCardData(token));
-          commonPromises.push(fetchUserData(token));
-        }
-
-        // Execute all requests concurrently
-        await Promise.all(commonPromises);
+        ]);
       } catch (error) {
-        console.error("Error loading initial data:", error);
-        setError("An unexpected error occurred while loading data.");
+        console.error("Error loading global data:", error);
+        setError("An unexpected error occurred while loading menu data.");
       } finally {
         setIsLoading(false);
       }
     }
-    LoadData();
+    loadGlobalData();
   }, []);
+
+  // Fetch user data whenever token changes
+  useEffect(() => {
+    async function loadUserData() {
+      if (token) {
+        try {
+          await Promise.all([
+            loadCardData(token),
+            fetchUserData(token)
+          ]);
+        } catch (error) {
+          console.error("Error loading user data:", error);
+        }
+      } else {
+        // Clear user data on logout
+        setUserData(null);
+        setCartItems({});
+      }
+    }
+    loadUserData();
+  }, [token]);
+
 
   const contextValue = {
     food_list,

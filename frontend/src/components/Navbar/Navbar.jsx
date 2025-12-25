@@ -9,12 +9,12 @@ const Navbar = ({ setShowLogin }) => {
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
-  
+
   const dropdownRef = useRef(null);
 
-  const { getTotalCartAmount, getTotalCartItems, setToken, token, settings } = useContext(StoreContext);
+  const { getTotalCartAmount, getTotalCartItems, setToken, token, settings, userData } = useContext(StoreContext);
   const nav = useNavigate();
-  
+
   const logout = () => {
     localStorage.removeItem("token");
     setToken("");
@@ -83,17 +83,17 @@ const Navbar = ({ setShowLogin }) => {
       </ul>
       <div className="navbar-right">
         <div className={`navbar-search-container ${showSearch ? 'active' : ''}`}>
-          <input 
-            type="text" 
-            placeholder="Search favorites..." 
+          <input
+            type="text"
+            placeholder="Search favorites..."
             value={searchQuery}
             onChange={handleSearch}
             className={showSearch ? 'show' : ''}
           />
-          <img 
-            src={assets.search_icon} 
-            alt="search" 
-            onClick={() => setShowSearch(!showSearch)} 
+          <img
+            src={assets.search_icon}
+            alt="search"
+            onClick={() => setShowSearch(!showSearch)}
           />
         </div>
         <div className="navbar-search-icon">
@@ -106,14 +106,14 @@ const Navbar = ({ setShowLogin }) => {
           <button onClick={() => setShowLogin(true)}>sign in</button>
         ) : (
           <div className="navbar-profile" ref={dropdownRef}>
-            <img 
-              src={assets.profile_icon || "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"} 
-              alt="profile" 
+            <img
+              src={assets.profile_icon || "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"}
+              alt="profile"
               onClick={() => setShowProfileDropdown(!showProfileDropdown)}
             />
             <ul className={`nav-profile-dropdown ${showProfileDropdown ? 'show' : ''}`}>
               <li className="profile-header">
-                 <p className="user-name">{userData ? userData.name || "User" : "Loading..."}</p>
+                <p className="user-name">{userData ? userData.name || "User" : "Loading..."}</p>
               </li>
               <li onClick={() => nav('/myorders')}>
                 <img src={assets.bag_icon} alt="" />

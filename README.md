@@ -1,56 +1,114 @@
-# Food Delivery Professional Suite
+# Full-Stack-Food-Delivery-MERN
 
-This project is a full-stack food delivery application featuring a customer frontend, an admin dashboard, and a robust Node.js backend.
+A modern, full-stack food delivery application built with the MERN stack (MongoDB, Express.js, React, Node.js).
 
-## 🚀 Deployment (Vercel)
+## 🚀 Features
 
-### 1. Backend
-- **Root Directory:** `backend`
-- **Environment Variables:**
-  - `MONGODB_URI`: Your MongoDB Atlas connection string.
-  - `JWT_SECRET`: A secure random string.
-  - `STRIPE_SECRET_KEY`: Your Stripe secret key.
-  - `CLOUDINARY_CLOUD_NAME`: From Cloudinary Dashboard.
-  - `CLOUDINARY_API_KEY`: From Cloudinary Dashboard.
-  - `CLOUDINARY_API_SECRET`: From Cloudinary Dashboard.
-  - `FRONTEND_URL`: URL of your deployed frontend.
-  - `ADMIN_URL`: URL of your deployed admin panel.
+- **Customer Frontend**: Browse menu, add items to cart, place orders, track order status
+- **Admin Dashboard**: Manage food items, categories, orders, and view analytics
+- **Backend API**: RESTful API with JWT authentication, Stripe payment integration
+- **Image Management**: Cloudinary integration for image uploads
+- **Responsive Design**: Mobile-friendly UI with modern aesthetics
 
-### 2. Frontend (Customer App)
-- **Root Directory:** `frontend`
-- **Environment Variables:**
-  - `VITE_BACKEND_URL`: URL of your deployed backend.
+## 🛠️ Tech Stack
 
-### 3. Admin Panel
-- **Root Directory:** `admin`
-- **Environment Variables:**
-  - `VITE_BACKEND_URL`: URL of your deployed backend.
+### Frontend
+- React.js with Vite
+- React Router for navigation
+- Context API for state management
+- Axios for API calls
+- Modern CSS with responsive design
 
-## 🛠️ Local Development
+### Backend
+- Node.js & Express.js
+- MongoDB with Mongoose
+- JWT for authentication
+- Stripe for payment processing
+- Cloudinary for image storage
+- Multer for file uploads
 
-1. **Backend:**
-   ```bash
-   cd backend
-   npm install
-   npm run server
-   ```
+### Admin Panel
+- Separate React application
+- Order management system
+- Food item CRUD operations
+- Category management
 
-2. **Frontend:**
-   ```bash
-   cd frontend
-   npm install
-   npm run dev
-   ```
+## 📦 Project Structure
 
-3. **Admin:**
-   ```bash
-   cd admin
-   npm install
-   npm run dev
-   ```
+```
+food-del/
+├── frontend/          # Customer-facing React application
+├── admin/            # Admin dashboard React application
+└── backend/          # Node.js/Express API server
+```
 
-## ✨ Features
-- **Cloudinary Integration**: Fully persistent image storage (Vercel-friendly).
-- **Responsive Design**: Optimized for both desktop and mobile users.
-- **Secure Authentication**: JWT-based login for users.
-- **Order Management**: Real-time status updates and Stripe payment integration.
+## 🔧 Installation & Setup
+
+### Prerequisites
+- Node.js (v14 or higher)
+- MongoDB
+- Cloudinary account
+- Stripe account
+
+### Environment Variables
+
+Create `.env` files in the backend directory:
+
+```env
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+STRIPE_SECRET_KEY=your_stripe_secret_key
+CLOUDINARY_CLOUD_NAME=your_cloudinary_name
+CLOUDINARY_API_KEY=your_cloudinary_key
+CLOUDINARY_API_SECRET=your_cloudinary_secret
+```
+
+### Running the Application
+
+1. **Backend Server**
+```bash
+cd backend
+npm install
+npm run server
+```
+
+2. **Frontend Application**
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+3. **Admin Dashboard**
+```bash
+cd admin
+npm install
+npm run dev
+```
+
+## 🎨 Features Implemented
+
+- ✅ User authentication & authorization
+- ✅ Browse food items by category
+- ✅ Shopping cart functionality
+- ✅ Stripe payment integration
+- ✅ Order tracking
+- ✅ Admin dashboard for order management
+- ✅ Food item management (CRUD)
+- ✅ Category management
+- ✅ Image upload with Cloudinary
+- ✅ Responsive design
+- ✅ HD images from Unsplash
+
+## 📝 License
+
+This project is open source and available under the MIT License.
+
+## 👨‍💻 Author
+
+**Biniyam Taye**
+
+## 🙏 Acknowledgments
+
+- Images from Unsplash
+- Icons and UI inspiration from modern food delivery apps
