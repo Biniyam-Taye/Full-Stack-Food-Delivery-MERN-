@@ -3,20 +3,20 @@ import "./NavBar.css";
 import { assets } from "../../assets/assets.js";
 import axios from "axios";
 
-const NavBar = ({ url: propUrl }) => {
+const NavBar = () => {
   const [adminProfile, setAdminProfile] = useState("");
-  const url = propUrl || (import.meta.env.VITE_BACKEND_URL || "http://localhost:4000").replace(/\/+$/, "");
+  const url = (import.meta.env.VITE_BACKEND_URL || "http://localhost:4000").replace(/\/+$/, "");
 
   const fetchSettings = async () => {
     try {
-      const response = await axios.get(`${url}/api/settings/get?t=${Date.now()}`);
+      const response = await axios.get(`${url}/api/settings/get`);
       if (response.data.success) {
         if (response.data.data.adminProfile) {
           setAdminProfile(response.data.data.adminProfile);
         }
       }
     } catch (error) {
-      console.error("Error fetching admin profile:", error);
+      console.log("Error fetching admin profile");
     }
   };
 
