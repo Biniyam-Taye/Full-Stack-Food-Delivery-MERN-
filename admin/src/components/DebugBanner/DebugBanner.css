@@ -1,0 +1,19 @@
+.debug-banner {
+    background-color: #fff3cd;
+    color: #856404;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10000;
+    border-top: 2px solid #ffeeba;
+    font-family: monospace;
+    font-size: 14px;
+}
+
+.debug-banner .error {
+    color: #721c24;
+    font-weight: bold;
+}

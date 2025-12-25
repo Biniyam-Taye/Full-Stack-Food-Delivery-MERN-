@@ -12,11 +12,14 @@ import EditFood from "./pages/EditFood/EditFood";
 import EditCategory from "./pages/EditCategory/EditCategory";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import DebugBanner from "./components/DebugBanner/DebugBanner";
+
 const App = () => {
   const url = import.meta.env.VITE_BACKEND_URL || "http://localhost:4000";
   return (
     <div>
       <ToastContainer />
+      <DebugBanner url={url} />
       <NavBar />
       <hr />
       <div className="app-content">

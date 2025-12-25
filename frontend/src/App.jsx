@@ -8,15 +8,15 @@ import Footer from "./components/Footer/Footer";
 import Loginpopup from "./components/Loginpopup/Loginpopup"; // Ensure correct import path
 import Verify from "./pages/verify/verify";
 import MyOrders from "./pages/myOrders/myOrders";
+import DebugBanner from "./components/DebugBanner/DebugBanner";
+// ... imports
+
 const App = () => {
-  // State to manage the visibility of the Login Popup
   const [showLogin, setShowLogin] = useState(false);
 
   return (
     <>
-      {/* ISSUE FIX: You must pass the setShowLogin function 
-        as a prop to the Loginpopup component so it can close itself.
-      */}
+      <DebugBanner />
       {showLogin ? <Loginpopup setShowLogin={setShowLogin} /> : <></>}
 
       <div className="App">
