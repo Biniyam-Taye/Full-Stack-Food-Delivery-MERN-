@@ -100,6 +100,26 @@ npm run dev
 - ✅ Responsive design
 - ✅ HD images from Unsplash
 
+## 🌐 Deployment
+
+This application is ready for deployment on Vercel's free tier!
+
+**📖 [Complete Deployment Guide](./DEPLOYMENT.md)**
+
+The deployment guide includes:
+- Step-by-step instructions for deploying backend, frontend, and admin panel
+- Environment variable configuration
+- Troubleshooting tips
+- Continuous deployment setup
+
+### Quick Deploy
+
+1. **Backend**: Deploy from `backend` directory
+2. **Frontend**: Deploy from `frontend` directory  
+3. **Admin**: Deploy from `admin` directory
+
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed instructions.
+
 ## 📝 License
 
 This project is open source and available under the MIT License.
