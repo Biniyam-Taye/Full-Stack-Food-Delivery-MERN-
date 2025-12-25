@@ -14,13 +14,18 @@ const AddCategory = ({ url }) => {
     formData.append("image", image);
     formData.append("name", name);
 
-    const response = await axios.post(`${url}/api/category/add`, formData);
-    if (response.data.success) {
-      setName("");
-      setImage(false);
-      toast.success(response.data.message);
-    } else {
-      toast.error(response.data.message);
+    try {
+      const response = await axios.post(`${url}/api/category/add`, formData);
+      if (response.data.success) {
+        setName("");
+        setImage(false);
+        toast.success(response.data.message);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Error adding category");
     }
   };
 

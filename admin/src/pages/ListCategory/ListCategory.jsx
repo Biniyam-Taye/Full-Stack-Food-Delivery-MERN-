@@ -15,24 +15,34 @@ const ListCategory = ({ url }) => {
   const totalPages = Math.ceil(list.length / itemsPerPage);
 
   const fetchCategories = async () => {
-    const response = await axios.get(`${url}/api/category/list`);
-    if (response.data.success) {
-      setList(response.data.data);
-    } else {
-      toast.error("Error fetching categories");
+    try {
+      const response = await axios.get(`${url}/api/category/list`);
+      if (response.data.success) {
+        setList(response.data.data);
+      } else {
+        toast.error("Error fetching categories");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Network Error: Could not fetch categories");
     }
   };
 
   const removeCategory = async (id) => {
-    const response = await axios.post(`${url}/api/category/remove`, { id });
-    if (response.data.success) {
-      toast.success(response.data.message);
-      await fetchCategories();
-      if (currentItems.length === 1 && currentPage > 1) {
-        setCurrentPage(currentPage - 1);
+    try {
+      const response = await axios.post(`${url}/api/category/remove`, { id });
+      if (response.data.success) {
+        toast.success(response.data.message);
+        await fetchCategories();
+        if (currentItems.length === 1 && currentPage > 1) {
+          setCurrentPage(currentPage - 1);
+        }
+      } else {
+        toast.error(response.data.message);
       }
-    } else {
-      toast.error(response.data.message);
+    } catch (error) {
+      console.error(error);
+      toast.error("Error removing category");
     }
   };
 

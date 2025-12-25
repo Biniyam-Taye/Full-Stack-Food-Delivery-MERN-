@@ -107,11 +107,18 @@ const Navbar = ({ setShowLogin }) => {
         ) : (
           <div className="navbar-profile" ref={dropdownRef}>
             <img 
-              src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" 
+              src={assets.profile_icon || "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"} 
               alt="profile" 
               onClick={() => setShowProfileDropdown(!showProfileDropdown)}
             />
             <ul className={`nav-profile-dropdown ${showProfileDropdown ? 'show' : ''}`}>
+              <li className="profile-header">
+                 <p className="user-name">{userData ? userData.name || "User" : "Loading..."}</p>
+              </li>
+              <li onClick={() => nav('/myorders')}>
+                <img src={assets.bag_icon} alt="" />
+                <p>Orders</p>
+              </li>
               <li onClick={logout}>
                 <img src={assets.logout_icon} alt="" />
                 <p>Logout</p>

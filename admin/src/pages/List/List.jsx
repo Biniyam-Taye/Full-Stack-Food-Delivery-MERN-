@@ -14,11 +14,16 @@ const List = ({ url }) => {
   const totalPages = Math.ceil(list.length / itemsPerPage);
 
   const fetchList = async () => {
-    const response = await axios.get(`${url}/api/food/list`);
-    if (response.data.success) {
-      setList(response.data.data);
-    } else {
-      toast.error("Error fetching food list");
+    try {
+      const response = await axios.get(`${url}/api/food/list`);
+      if (response.data.success) {
+        setList(response.data.data);
+      } else {
+        toast.error("Error fetching food list");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Network Error: Could not fetch list");
     }
   };
 

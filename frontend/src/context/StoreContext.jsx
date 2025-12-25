@@ -5,10 +5,11 @@ export const StoreContext = createContext(null);
 const StoreContextProvider = (props) => {
   const [cartItems, setCartItems] = useState({});
   const url = (import.meta.env.VITE_BACKEND_URL || "http://localhost:4000").replace(/\/+$/, "");
-  const [token, setToken] = useState("");
+  const [token, setToken] = useState(localStorage.getItem("token") || "");
   const [food_list, setFoodlist] = useState([]);
   const [menu_list, setMenulist] = useState([]);
   const [userData, setUserData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true); // Add global loading state
   const [settings, setSettings] = useState({
     phone: "+1-212-456-7890",
     email: "contact@mentesdelivery.com",
@@ -27,22 +28,30 @@ const StoreContextProvider = (props) => {
     }
 
     if (token) {
-      await axios.post(
-        url + "/api/cart/add",
-        { itemId },
-        { headers: { token } }
-      );
+      try {
+        await axios.post(
+          url + "/api/cart/add",
+          { itemId },
+          { headers: { token } }
+        );
+      } catch (error) {
+        console.error("Error adding to cart:", error);
+      }
     }
   };
 
   const removeFromCart = async (itemId) => {
     setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
     if (token) {
-      await axios.post(
-        url + "/api/cart/remove",
-        { itemId },
-        { headers: { token } }
-      );
+      try {
+        await axios.post(
+          url + "/api/cart/remove",
+          { itemId },
+          { headers: { token } }
+        );
+      } catch (error) {
+        console.error("Error removing from cart:", error);
+      }
     }
   };
 
@@ -52,12 +61,8 @@ const StoreContextProvider = (props) => {
       if (cartItems[item] > 0) {
         let itemInfo = food_list.find((product) => product._id === item);
 
-        // FIX: Add a check to ensure itemInfo is NOT undefined
         if (itemInfo) {
           totalAmount += itemInfo.price * cartItems[item];
-        } else {
-          // Optional: Log an error if a product is missing for debugging
-          console.error(`Product with ID ${item} not found in food_list.`);
         }
       }
     }
@@ -75,8 +80,16 @@ const StoreContextProvider = (props) => {
   };
 
   const fetchFoodList = async () => {
-    const response = await axios.get(url + "/api/food/list");
-    setFoodlist(response.data.data);
+    try {
+      const response = await axios.get(url + "/api/food/list");
+      if (response.data.success) {
+        setFoodlist(response.data.data);
+      } else {
+        console.error("Failed to fetch food list:", response.data.message);
+      }
+    } catch (error) {
+      console.error("Error fetching food list:", error);
+    }
   };
 
   const fetchMenuList = async () => {
@@ -89,6 +102,8 @@ const StoreContextProvider = (props) => {
           menu_image: cat.image
         }));
         setMenulist(backendMenu);
+      } else {
+         console.error("Failed to fetch menu list:", response.data.message);
       }
     } catch (error) {
       console.error("Error fetching menu categories:", error);
@@ -120,30 +135,44 @@ const StoreContextProvider = (props) => {
   };
 
   const loadCardData = async (token) => {
-    const response = await axios.get(url + "/api/cart/get", {
-      headers: { token },
-    });
-    setCartItems(response.data.cartData);
+    try {
+      const response = await axios.get(url + "/api/cart/get", {
+        headers: { token },
+      });
+      if (response.data && response.data.cartData) {
+         setCartItems(response.data.cartData);
+      }
+    } catch (error) {
+       console.error("Error loading cart data:", error);
+    }
   };
+
   useEffect(() => {
     async function LoadData() {
-      // Parallelize independent fetch requests
-      const commonPromises = [
-        fetchFoodList(),
-        fetchMenuList(),
-        fetchSettings()
-      ];
+      setIsLoading(true);
+      try {
+        // Parallelize independent fetch requests
+        const commonPromises = [
+          fetchFoodList(),
+          fetchMenuList(),
+          fetchSettings()
+        ];
 
-      // Add user-specific data loading if a token exists
-      const token = localStorage.getItem("token");
-      if (token) {
-        setToken(token);
-        commonPromises.push(loadCardData(token));
-        commonPromises.push(fetchUserData(token));
+        // Add user-specific data loading if a token exists
+        const token = localStorage.getItem("token");
+        if (token) {
+          setToken(token);
+          commonPromises.push(loadCardData(token));
+          commonPromises.push(fetchUserData(token));
+        }
+
+        // Execute all requests concurrently
+        await Promise.all(commonPromises);
+      } catch (error) {
+        console.error("Error loading initial data:", error);
+      } finally {
+        setIsLoading(false);
       }
-
-      // Execute all requests concurrently
-      await Promise.all(commonPromises);
     }
     LoadData();
   }, []);
@@ -163,6 +192,7 @@ const StoreContextProvider = (props) => {
     setToken,
     userData,
     fetchUserData,
+    isLoading, // Export isLoading
   };
   return (
     <StoreContext.Provider value={contextValue}>
