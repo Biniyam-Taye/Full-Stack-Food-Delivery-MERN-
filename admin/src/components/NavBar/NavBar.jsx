@@ -3,21 +3,24 @@ import "./NavBar.css";
 import { assets } from "../../assets/assets.js";
 import axios from "axios";
 
-const NavBar = () => {
+const NavBar = ({ url: propUrl }) => {
   const [adminProfile, setAdminProfile] = useState("");
-  const url = import.meta.env.VITE_BACKEND_URL || "http://localhost:4000";
+  const url = propUrl || (import.meta.env.VITE_BACKEND_URL || "http://localhost:4000").replace(/\/+$/, "");
 
-  useEffect(() => {
-    const fetchSettings = async () => {
-      try {
-        const response = await axios.get(`${url}/api/settings/get`);
-        if (response.data.success) {
+  const fetchSettings = async () => {
+    try {
+      const response = await axios.get(`${url}/api/settings/get?t=${Date.now()}`);
+      if (response.data.success) {
+        if (response.data.data.adminProfile) {
           setAdminProfile(response.data.data.adminProfile);
         }
-      } catch (error) {
-        console.log("Error fetching admin profile");
       }
-    };
+    } catch (error) {
+      console.error("Error fetching admin profile:", error);
+    }
+  };
+
+  useEffect(() => {
     fetchSettings();
 
     const handleProfileUpdate = () => {

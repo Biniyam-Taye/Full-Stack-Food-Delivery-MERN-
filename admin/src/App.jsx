@@ -20,7 +20,7 @@ const App = () => {
     <div>
       <ToastContainer />
       <DebugBanner url={url} />
-      <NavBar />
+      <NavBar url={url} />
       <hr />
       <div className="app-content">
         <SideBar />
