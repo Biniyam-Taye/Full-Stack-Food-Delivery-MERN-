@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 export const connectDB = async () => {
   try {
     if (!process.env.MONGODB_URI) {
-      throw new Error("MONGODB_URI is not defined in environment variables");
+      console.error("MONGODB_URI is not defined in environment variables. DB connection skipped.");
+      return;
     }
 
     // Optimize for serverless
@@ -17,7 +18,5 @@ export const connectDB = async () => {
     console.log("DB connected successfully");
   } catch (error) {
     console.error("DB connection error:", error.message);
-    // Don't throw in serverless - let the function continue
-    // The error will be caught by individual route handlers
   }
 };
