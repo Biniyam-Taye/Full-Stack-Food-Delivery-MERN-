@@ -61,6 +61,8 @@ const Settings = ({ url }) => {
         toast.success("Settings updated successfully");
         setAdminProfileFile(false);
         fetchSettings();
+        // Notify Navbar to update profile image
+        window.dispatchEvent(new Event("adminProfileUpdate"));
       } else {
         toast.error(response.data.message);
       }

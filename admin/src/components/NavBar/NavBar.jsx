@@ -19,6 +19,16 @@ const NavBar = () => {
       }
     };
     fetchSettings();
+
+    const handleProfileUpdate = () => {
+      fetchSettings();
+    };
+
+    window.addEventListener("adminProfileUpdate", handleProfileUpdate);
+
+    return () => {
+      window.removeEventListener("adminProfileUpdate", handleProfileUpdate);
+    };
   }, []);
 
   return (
